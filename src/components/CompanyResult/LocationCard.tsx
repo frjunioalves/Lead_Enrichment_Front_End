@@ -6,9 +6,9 @@ interface LocationCardProps {
 }
 
 export function LocationCard({ endereco }: LocationCardProps) {
-  const { logradouro, municipio, uf, cep } = endereco;
+  const { logradouro, bairro, municipio, uf, cep, fuso } = endereco;
 
-  const isEmpty = !logradouro && !municipio && !uf && !cep;
+  const isEmpty = !logradouro && !bairro && !municipio && !uf && !cep;
   if (isEmpty) return null;
 
   return (
@@ -18,10 +18,14 @@ export function LocationCard({ endereco }: LocationCardProps) {
       </CardHeader>
       <CardContent className="text-sm space-y-1">
         {logradouro && <p>{logradouro}</p>}
+        {bairro && <p className="text-muted-foreground">{bairro}</p>}
         <p className="text-muted-foreground">
           {[municipio, uf].filter(Boolean).join(" / ")}
           {cep && ` · CEP ${cep}`}
         </p>
+        {fuso && (
+          <p className="text-xs text-muted-foreground">Fuso: {fuso}</p>
+        )}
       </CardContent>
     </Card>
   );
