@@ -17,6 +17,9 @@ import { Input } from "@/components/ui/input";
 
 import { leadSchema, type LeadFormData } from "@/schemas/leadSchema";
 
+// IMaskInput renderiza um <input> nativo sem passar por asChild do Shadcn,
+// então não herda os estilos do componente Input. Esta classe replica manualmente
+// o visual do Input para manter consistência visual nos campos mascarados.
 const maskedInputClass =
   "h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base " +
   "transition-colors outline-none placeholder:text-muted-foreground " +
@@ -24,7 +27,7 @@ const maskedInputClass =
   "aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20";
 
 interface LeadFormProps {
-  onSubmit: (cnpj: string, data: LeadFormData) => void;
+  onSubmit: (data: LeadFormData) => void;
   isLoading?: boolean;
 }
 
@@ -36,7 +39,7 @@ export function LeadForm({ onSubmit, isLoading = false }: LeadFormProps) {
   });
 
   function handleSubmit(data: LeadFormData) {
-    onSubmit(data.cnpj.replace(/\D/g, ""), data);
+    onSubmit(data);
   }
 
   return (

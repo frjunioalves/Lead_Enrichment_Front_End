@@ -5,6 +5,8 @@ export const leadSchema = z.object({
   nome: z.string().min(2, "Nome deve ter ao menos 2 caracteres"),
   email: z.string().email("Formato de e-mail inválido"),
   telefone: z.string().min(14, "Telefone inválido"),
+  // Dois passes: regex valida o formato com máscara; refine valida os dígitos verificadores.
+  // A ordem importa — o refine só roda se o regex passou, evitando erros de parse no algoritmo.
   cnpj: z
     .string()
     .regex(CNPJ_REGEX, "Formato de CNPJ inválido")

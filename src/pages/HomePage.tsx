@@ -1,12 +1,17 @@
+import { useState } from "react";
 import { LeadForm } from "@/components/LeadForm";
+import { CompanyResult } from "@/components/CompanyResult";
+import { useEnrichLead } from "@/hooks/useEnrichLead";
 import type { LeadFormData } from "@/schemas/leadSchema";
 
 export function HomePage() {
-  function handleSearch(cnpj: string, data: LeadFormData) {
-    // FE-05 substituirá este log pelo hook useCompanyQuery
-    console.log("CNPJ limpo:", cnpj);
-    console.log("Dados do lead:", data);
-  }
+  const [formData, setFormData] = useState<LeadFormData | null>(null);
+
+  // isFetching (não isPending) para mostrar loading apenas durante requisições ativas,
+  // já que isPending seria true mesmo antes do primeiro submit com enabled: false.
+  const { data: result, error, isFetching } = useEnrichLead(formData);
+
+  const apiError = error ? (error as { message: string }).message : null;
 
   return (
     <div className="min-h-screen bg-muted/40 flex flex-col items-center justify-center gap-6 p-6">
@@ -20,7 +25,13 @@ export function HomePage() {
         </p>
       </div>
 
-      <LeadForm onSubmit={handleSearch} />
+      <LeadForm onSubmit={(data) => setFormData(data)} isLoading={isFetching} />
+
+      {apiError && (
+        <p className="text-sm text-destructive">{apiError}</p>
+      )}
+
+      {result && <CompanyResult data={result} />}
     </div>
   );
 }
