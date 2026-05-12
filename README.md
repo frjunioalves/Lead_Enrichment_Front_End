@@ -46,7 +46,7 @@ O pipeline de CI/CD está configurado e funcionando via GitHub Actions — qualq
 ## Pré-requisitos
 
 - Docker e Docker Compose (opção A)
-- Node.js 20+ e npm 10+ (opção B)
+- Node.js 22+ e pnpm 10+ (opção B)
 - Backend rodando em `http://localhost:3000`
 
 ## Como rodar
@@ -74,7 +74,7 @@ Acesse `http://localhost:8080`.
 ### Opção B — Desenvolvimento local
 
 ```bash
-npm install
+pnpm install
 ```
 
 Crie `.env.local` na raiz:
@@ -84,7 +84,7 @@ VITE_API_URL=http://localhost:3000
 ```
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Acesse `http://localhost:5173`.
@@ -93,10 +93,10 @@ Acesse `http://localhost:5173`.
 
 | Comando | Descrição |
 |---|---|
-| `npm run dev` | Inicia o servidor de desenvolvimento (HMR) |
-| `npm run build` | Compila TypeScript e gera o bundle de produção |
-| `npm run preview` | Serve o build de produção localmente |
-| `npm run lint` | Executa o ESLint |
+| `pnpm dev` | Inicia o servidor de desenvolvimento (HMR) |
+| `pnpm build` | Compila TypeScript e gera o bundle de produção |
+| `pnpm preview` | Serve o build de produção localmente |
+| `pnpm lint` | Executa o ESLint |
 
 ## Estrutura do projeto
 
