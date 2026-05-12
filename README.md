@@ -157,6 +157,33 @@ O token JWT é armazenado via Zustand + `persist` (localStorage). O Axios client
 
 Escolhi React + Vite pois acho simples sua implementação. Desde o princípio queria que o front-end e o back-end fossem separados, por isso não escolhi um framework fullstack. Fiz esse projeto de ponta a ponta e me diverti muito: desde a concepção da arquitetura até a aplicação de conceitos de DevOps como CI/CD, Docker, Gitflow e deploy na Azure Web Service.
 
+### Migração de npm para pnpm
+
+Durante o projeto migrei o gerenciador de pacotes de **npm** para **pnpm**. A motivação principal foi o cache global via hard links do pnpm, que torna as instalações significativamente mais rápidas, além de gerar um `pnpm-lock.yaml` mais determinístico e um `node_modules` menor em disco.
+
+A motivação principal foi mitigar os riscos dos recentes ataques à cadeia de suprimentos (supply chain attacks) direcionados a módulos do npm. O pnpm isola as dependências de forma mais estrita — cada pacote só tem acesso às suas próprias dependências declaradas, impedindo que um pacote malicioso acesse dependências de outros pacotes transitivamente. Isso reduz significativamente a superfície de ataque em comparação ao modelo de `node_modules` hoisting do npm.
+
+A migração em si foi simples — remover `package-lock.json` e `node_modules`, rodar `pnpm install` para gerar o lockfile e ajustar o `.gitignore` — mas expôs dois bugs no Dockerfile:
+
+**Bug 1 — comandos npm remanescentes no Dockerfile:** após trocar o gerenciador no ambiente local, o Dockerfile ainda usava `npm ci` e `npm run build`. O build na Docker quebrou porque o `npm` não encontrava o `package-lock.json` (que havia sido removido). A correção exigiu ativar o pnpm via `corepack`, copiar o `pnpm-lock.yaml` e substituir todos os comandos npm pelos equivalentes pnpm:
+
+```dockerfile
+RUN corepack enable && corepack prepare pnpm@latest --activate
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+RUN pnpm run build
+```
+
+**Bug 2 — `node:20-alpine` incompatível com `pnpm@latest`:** o `corepack prepare pnpm@latest` falhou na imagem `node:20-alpine` porque a versão mais recente do pnpm exige Node.js 22+. A solução foi atualizar a imagem base para `node:22-alpine` e adicionar `--ignore-scripts` para evitar scripts de pós-instalação em ambiente CI:
+
+```dockerfile
+FROM node:22-alpine AS builder
+ENV CI=true
+RUN pnpm install --frozen-lockfile --ignore-scripts
+```
+
+No total, a migração e a resolução dos dois bugs custaram cerca de 1 hora extra de depuração.
+
 ---
 
 ## Como a IA te ajudou a construir essa solução
