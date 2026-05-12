@@ -1,4 +1,6 @@
+import { MessageCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { buildWhatsAppUrl } from "@/utils/whatsapp";
 
 interface ContactCardProps {
   telefone: string | null;
@@ -17,7 +19,15 @@ export function ContactCard({ telefone, email }: ContactCardProps) {
         {telefone && (
           <div>
             <p className="text-muted-foreground">Telefone</p>
-            <p className="font-medium">{telefone}</p>
+            <a
+              href={buildWhatsAppUrl(telefone)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium inline-flex items-center gap-1.5 text-green-600 hover:text-green-700 hover:underline transition-colors"
+            >
+              <MessageCircle className="size-3.5" />
+              {telefone}
+            </a>
           </div>
         )}
         {email && (
