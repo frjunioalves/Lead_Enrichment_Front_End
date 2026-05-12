@@ -1,6 +1,6 @@
 # Enriquecedor de Leads — Frontend
 
-Interface web para consulta e enriquecimento de dados de leads via CNPJ. O usuário informa nome, e-mail, telefone e CNPJ; o frontend valida os dados, chama o backend e exibe as informações da empresa de forma estruturada.
+SPA React que permite enriquecer dados de leads via CNPJ. O usuário faz login, preenche o formulário com nome, e-mail, telefone e CNPJ, e recebe dados estruturados da empresa (segmento, faixa de funcionários, endereço, fuso horário). O histórico de buscas fica disponível na barra lateral.
 
 ## Stack
 
@@ -9,19 +9,34 @@ Interface web para consulta e enriquecimento de dados de leads via CNPJ. O usuá
 | React | 19 | Base da aplicação |
 | TypeScript | ~6.0 | Tipagem estática |
 | Vite | 8 | Build e dev server |
-| ESLint | 10 | Linting |
-
-> As dependências planejadas (React Query, Zod, React Hook Form, Shadcn/ui, Tailwind CSS, Axios) estão documentadas em [`docs/frontend-features.md`](docs/frontend-features.md).
+| TailwindCSS | 4 | Estilização utilitária |
+| shadcn/ui | 4 | Componentes acessíveis (Button, Card, Input, Badge, Form) |
+| React Hook Form | 7 | Gerenciamento de formulário |
+| Zod | 4 | Validação de schema |
+| React Query | 5 | Cache e estado de requisições |
+| Axios | 1 | Cliente HTTP |
+| Zustand | 5 | Estado global de autenticação |
+| react-router-dom | 7 | Roteamento SPA |
+| react-imask | 7 | Máscara de CNPJ e telefone |
 
 ## Pré-requisitos
 
 - Node.js 20+
 - npm 10+
+- Backend rodando em `http://localhost:3000`
 
 ## Instalação
 
 ```bash
 npm install
+```
+
+## Variáveis de ambiente
+
+Crie `.env.local` na raiz:
+
+```env
+VITE_API_URL=http://localhost:3000
 ```
 
 ## Comandos
@@ -36,27 +51,52 @@ npm install
 ## Estrutura do projeto
 
 ```
-front-end/
-├── src/
-│   ├── api/          # Camada HTTP (Axios client + funções por endpoint)
-│   ├── components/   # Componentes React (formulário, cards de resultado)
-│   ├── hooks/        # Hooks customizados (React Query encapsulado)
-│   ├── schemas/      # Schemas de validação Zod
-│   ├── types/        # Tipos TypeScript dos responses do backend
-│   └── utils/        # Utilitários (formatadores, cn())
-├── docs/
-│   └── frontend-features.md   # Especificação completa de funcionalidades
-└── public/
+src/
+├── api/
+│   ├── client.ts        # Axios instance + interceptor JWT
+│   ├── auth.ts          # register, login
+│   ├── leads.ts         # postEnrichLead
+│   └── history.ts       # getLeadHistory
+├── components/
+│   ├── CompanyResult/
+│   │   ├── CompanyCard.tsx   # Dados cadastrais
+│   │   ├── ContactCard.tsx   # Telefone e e-mail
+│   │   ├── LocationCard.tsx  # Endereço + fuso
+│   │   ├── LeadCard.tsx      # Dados do lead
+│   │   └── index.tsx
+│   ├── ui/              # shadcn/ui primitivos
+│   ├── Layout.tsx       # Shell com sidebar
+│   ├── LeadForm.tsx     # Formulário principal
+│   └── Sidebar.tsx      # Histórico + logout
+├── hooks/
+│   ├── useEnrichLead.ts # React Query — POST enrich
+│   └── useLeadHistory.ts # React Query — GET history
+├── pages/
+│   ├── LoginPage.tsx
+│   ├── RegisterPage.tsx
+│   ├── HomePage.tsx
+│   └── HistoryPage.tsx
+├── schemas/
+│   ├── leadSchema.ts    # Zod — validação do formulário
+│   └── authSchema.ts    # Zod — login e registro
+├── store/
+│   └── authStore.ts     # Zustand — token + user (persiste em localStorage)
+├── types/
+│   └── company.ts       # EnrichedCompany e tipos do domínio
+└── utils/
+    ├── mapHistory.ts    # Transforma LeadHistory para EnrichedCompany
+    └── validateCNPJ.ts  # Validação do dígito verificador
 ```
 
-## Variáveis de ambiente
+## Rotas
 
-Crie um arquivo `.env.local` na raiz do projeto:
+| Rota | Página | Protegida |
+|---|---|---|
+| `/login` | LoginPage | Não |
+| `/register` | RegisterPage | Não |
+| `/` | HomePage | Sim (Layout) |
+| `/history/:id` | HistoryPage | Sim (Layout) |
 
-```env
-VITE_API_URL=http://localhost:3333
-```
+## Fluxo de autenticação
 
-## Documentação
-
-- [Funcionalidades e arquitetura detalhada](docs/frontend-features.md)
+O token JWT é armazenado via Zustand + `persist` (localStorage). O Axios client injeta o header `Authorization: Bearer <token>` automaticamente em todas as requisições. Ao fazer logout, o store é limpo e o usuário é redirecionado para `/login`.
