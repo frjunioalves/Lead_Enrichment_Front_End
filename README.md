@@ -21,23 +21,43 @@ SPA React que permite enriquecer dados de leads via CNPJ. O usuário faz login, 
 
 ## Pré-requisitos
 
-- Node.js 20+
-- npm 10+
+- Docker e Docker Compose (opção A)
+- Node.js 20+ e npm 10+ (opção B)
 - Backend rodando em `http://localhost:3000`
 
-## Instalação
+## Como rodar
+
+### Opção A — Docker (recomendado)
+
+O `VITE_API_URL` é embutido no bundle durante o build, então deve ser passado como variável na hora de subir:
+
+```bash
+VITE_API_URL=http://localhost:3000 docker compose up --build
+```
+
+| Serviço | Porta no host |
+|---|---|
+| Frontend (nginx) | `8080` |
+
+Acesse `http://localhost:8080`.
+
+### Opção B — Desenvolvimento local
 
 ```bash
 npm install
 ```
-
-## Variáveis de ambiente
 
 Crie `.env.local` na raiz:
 
 ```env
 VITE_API_URL=http://localhost:3000
 ```
+
+```bash
+npm run dev
+```
+
+Acesse `http://localhost:5173`.
 
 ## Comandos
 
