@@ -35,6 +35,9 @@
     "zod": "^4.4.3",
     "zustand": "^5.0.13"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": ["core-js", "core-js-pure", "msw"]
+  },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/node": "^24.12.2",
