@@ -2,6 +2,22 @@
 
 SPA React que permite enriquecer dados de leads via CNPJ. O usuário faz login, preenche o formulário com nome, e-mail, telefone e CNPJ, e recebe dados estruturados da empresa (segmento, faixa de funcionários, endereço, fuso horário). O histórico de buscas fica disponível na barra lateral.
 
+## Screenshots
+
+**Login**
+
+![Login](images/1.png)
+
+**Formulário de busca**
+
+![Formulário](images/2.png)
+
+**Resultado do enriquecimento**
+
+![Resultado](images/3.png)
+
+---
+
 ## Stack
 
 | Tecnologia | Versão | Papel |
@@ -120,3 +136,39 @@ src/
 ## Fluxo de autenticação
 
 O token JWT é armazenado via Zustand + `persist` (localStorage). O Axios client injeta o header `Authorization: Bearer <token>` automaticamente em todas as requisições. Ao fazer logout, o store é limpo e o usuário é redirecionado para `/login`.
+
+---
+
+## Decisões de projeto e justificativas
+
+Escolhi React + Vite pois acho simples sua implementação. Desde o princípio queria que o front-end e o back-end fossem separados, por isso não escolhi um framework fullstack. Fiz esse projeto de ponta a ponta e me diverti muito: desde a concepção da arquitetura até a aplicação de conceitos de DevOps como CI/CD, Docker, Gitflow e deploy na Azure Web Service.
+
+---
+
+## Como a IA te ajudou a construir essa solução
+
+A IA foi utilizada principalmente para tirar dúvidas sobre features e discutir melhores formas de implementação.
+
+No início do projeto ela não foi usada com frequência para geração de código, pois a fase inicial envolveu definir a arquitetura e experimentar bibliotecas novas como Zod e React Query. Essa exploração foi feita de forma autônoma para consolidar o entendimento antes de delegar qualquer implementação.
+
+Após essa etapa, adotei um fluxo estruturado de desenvolvimento com IA:
+
+1. **Descrição completa da feature** — escopo, limitações, padrões a seguir e comportamento esperado eram documentados antes de qualquer código.
+2. **Geração de um arquivo `.md`** — a IA produzia um documento descrevendo a implementação proposta, que eu revisava e corrigia conforme necessário.
+3. **Implementação** — somente após o `.md` estar aprovado a IA gerava o código, e eu verificava se o resultado estava alinhado com o que havia sido especificado.
+
+Todas as decisões de arquitetura, revisão de código e validação dos resultados foram feitas por mim ao longo de todo o processo.
+
+---
+
+## Tempo gasto na execução do desafio
+
+Entre 10 e 15 horas.
+
+---
+
+## Se você tivesse mais tempo, o que teria feito?
+
+- Teria feito uma documentação melhor, listando os requisitos, e aplicado de forma mais adequada os conceitos de Gitflow.
+- **Testes automatizados**: testes de componente com Vitest + Testing Library.
+- **Refresh token**: o JWT expira em 7 dias sem renovação automática; implementaria um fluxo de refresh para manter a sessão ativa de forma segura.
