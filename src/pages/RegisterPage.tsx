@@ -22,6 +22,7 @@ export function RegisterPage() {
   const navigate = useNavigate();
   const [apiError, setApiError] = useState<string | null>(null);
 
+  // onTouched exibe erros só após o usuário interagir com o campo, evitando mensagens prematuras
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: { nome: '', email: '', senha: '', confirmarSenha: '' },
@@ -31,6 +32,7 @@ export function RegisterPage() {
   async function handleSubmit(data: RegisterFormData) {
     setApiError(null);
     try {
+      // confirmarSenha não é enviado ao backend — apenas validação client-side
       await postRegister({ nome: data.nome, email: data.email, senha: data.senha });
       navigate('/login');
     } catch (err) {

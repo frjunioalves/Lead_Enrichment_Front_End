@@ -24,6 +24,7 @@ export function LoginPage() {
   const setAuth = useAuthStore((s) => s.setAuth);
   const [apiError, setApiError] = useState<string | null>(null);
 
+  // onTouched exibe erros só após o usuário interagir com o campo, evitando mensagens prematuras
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', senha: '' },
@@ -34,6 +35,7 @@ export function LoginPage() {
     setApiError(null);
     try {
       const result = await postLogin(data);
+      // Persiste token e dados do usuário no store (localStorage via zustand/persist)
       setAuth(result.token, result.user);
       navigate('/');
     } catch (err) {

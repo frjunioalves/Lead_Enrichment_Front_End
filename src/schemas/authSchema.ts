@@ -12,6 +12,7 @@ export const registerSchema = z
     senha: z.string().min(6, 'Senha deve ter ao menos 6 caracteres'),
     confirmarSenha: z.string(),
   })
+  // refine é usado para validação cross-field; path aponta o erro para o campo confirmarSenha no formulário
   .refine((data) => data.senha === data.confirmarSenha, {
     message: 'As senhas não conferem',
     path: ['confirmarSenha'],

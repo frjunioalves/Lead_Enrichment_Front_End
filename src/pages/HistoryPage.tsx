@@ -9,6 +9,7 @@ import { mapHistoryToResponse } from '@/utils/mapHistory';
 export function HistoryPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  // Reutiliza o cache do Sidebar — não faz nova requisição se os dados ainda forem válidos
   const { data: history = [], isLoading } = useLeadHistory();
 
   const item = history.find((h) => h.id === id);

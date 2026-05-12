@@ -8,6 +8,7 @@ interface LocationCardProps {
 export function LocationCard({ endereco }: LocationCardProps) {
   const { logradouro, bairro, municipio, uf, cep, fuso } = endereco;
 
+  // Endereço pode vir completamente vazio para algumas empresas — oculta o card nesse caso
   const isEmpty = !logradouro && !bairro && !municipio && !uf && !cep;
   if (isEmpty) return null;
 

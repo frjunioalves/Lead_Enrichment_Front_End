@@ -15,6 +15,7 @@ export function CompanyResult({ data }: CompanyResultProps) {
 
   return (
     <div className="w-full max-w-2xl grid gap-4">
+      {/* ExportMenu recebe um único elemento — o resultado atual — permitindo exportar apenas este lead */}
       <div className="flex justify-end">
         <ExportMenu rows={[mapToExportRow(data)]} />
       </div>

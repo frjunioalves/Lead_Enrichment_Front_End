@@ -1,5 +1,6 @@
 import type { LeadEnrichedResponse } from '@/types/company';
 
+// Estrutura plana usada por exportCsv e exportPdf — sem aninhamento para facilitar a serialização
 export interface ExportRow {
   nome: string;
   emailLead: string;
@@ -44,9 +45,11 @@ export const EXPORT_HEADERS: Record<keyof ExportRow, string> = {
   emailEmpresa: 'E-mail da Empresa',
 };
 
+// Converte qualquer valor para string; null/undefined vira string vazia para evitar "null" no CSV/PDF
 const str = (v: string | number | null | undefined): string =>
   v != null ? String(v) : '';
 
+// Achata a estrutura aninhada de LeadEnrichedResponse em uma linha tabular exportável
 export function mapToExportRow(lead: LeadEnrichedResponse): ExportRow {
   const { empresa } = lead;
   return {

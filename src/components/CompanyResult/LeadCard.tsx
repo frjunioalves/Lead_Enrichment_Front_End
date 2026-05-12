@@ -25,6 +25,7 @@ export function LeadCard({ nome, email, telefone }: LeadCardProps) {
         </div>
         <div>
           <p className="text-muted-foreground">Telefone</p>
+          {/* Telefone do lead sempre presente — abre WhatsApp Web diretamente */}
           <a
             href={buildWhatsAppUrl(telefone)}
             target="_blank"

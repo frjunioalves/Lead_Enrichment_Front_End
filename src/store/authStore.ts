@@ -14,6 +14,7 @@ interface AuthState {
   logout: () => void;
 }
 
+// persist salva em localStorage com a chave 'auth-storage', mantendo a sessão após refresh de página
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({

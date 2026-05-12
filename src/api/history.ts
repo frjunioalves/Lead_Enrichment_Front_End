@@ -1,5 +1,6 @@
 import { apiClient } from './client';
 
+// Espelha o select do LeadHistoryService.listByUser — estrutura plana para facilitar serialização no banco
 export interface LeadHistoryItem {
   id: string;
   leadNome: string;
@@ -25,6 +26,7 @@ export interface LeadHistoryItem {
   criadoEm: string;
 }
 
+// Retorna o histórico do usuário autenticado, ordenado do mais recente ao mais antigo
 export async function getLeadHistory(): Promise<LeadHistoryItem[]> {
   const res = await apiClient.get<LeadHistoryItem[]>('/api/leads/history');
   return res.data;

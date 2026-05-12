@@ -8,6 +8,7 @@ interface ContactCardProps {
 }
 
 export function ContactCard({ telefone, email }: ContactCardProps) {
+  // Contato da empresa é opcional na BrasilAPI — oculta o card inteiro se ambos estiverem ausentes
   if (!telefone && !email) return null;
 
   return (

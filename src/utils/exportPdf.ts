@@ -2,7 +2,9 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { EXPORT_HEADERS, type ExportRow } from './exportRow';
 
+// Gera e faz download de um PDF em A4 paisagem com todos os campos do lead
 export function downloadPdf(rows: ExportRow[], filename: string): void {
+  // Landscape para caber as 19 colunas sem truncar
   const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
 
   const keys = Object.keys(EXPORT_HEADERS) as (keyof ExportRow)[];

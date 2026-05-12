@@ -8,6 +8,7 @@ interface ExportMenuProps {
   rows: ExportRow[];
 }
 
+// Usa a data ISO (YYYY-MM-DD) para que os arquivos ordenem cronologicamente no explorador
 function buildFilename(ext: string): string {
   const date = new Date().toISOString().slice(0, 10);
   return `leads_export_${date}.${ext}`;

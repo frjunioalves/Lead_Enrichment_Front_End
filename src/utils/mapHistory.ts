@@ -1,6 +1,7 @@
 import type { LeadHistoryItem } from '@/api/history';
 import type { LeadEnrichedResponse } from '@/types/company';
 
+// Re-aninha o registro plano do banco de volta para a estrutura que CompanyResult espera
 export function mapHistoryToResponse(item: LeadHistoryItem): LeadEnrichedResponse {
   return {
     nome: item.leadNome,

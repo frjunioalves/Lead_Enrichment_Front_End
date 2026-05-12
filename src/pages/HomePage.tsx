@@ -11,6 +11,7 @@ export function HomePage() {
 
   const { data: result, error, isFetching } = useEnrichLead(formData);
 
+  // Após cada enriquecimento bem-sucedido, força o Sidebar a recarregar o histórico
   useEffect(() => {
     if (result) queryClient.invalidateQueries({ queryKey: ['history'] });
   }, [result, queryClient]);
