@@ -2,6 +2,14 @@
 
 SPA React que permite enriquecer dados de leads via CNPJ. O usuário faz login, preenche o formulário com nome, e-mail, telefone e CNPJ, e recebe dados estruturados da empresa (segmento, faixa de funcionários, endereço, fuso horário). O histórico de buscas fica disponível na barra lateral.
 
+## Demo
+
+A aplicação está disponível em produção, com deploy realizado na **Azure Web Service** e banco de dados PostgreSQL hospedado na **Hetzner**:
+
+**[https://lead-enricher-f9hrb2fee6asdpa6.canadacentral-01.azurewebsites.net/](https://lead-enricher-f9hrb2fee6asdpa6.canadacentral-01.azurewebsites.net/)**
+
+O pipeline de CI/CD está configurado e funcionando via GitHub Actions — qualquer push na branch `main` dispara o build e o deploy automático na Azure Web Service.
+
 ## Screenshots
 
 **Login**
