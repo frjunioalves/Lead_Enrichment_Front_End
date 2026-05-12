@@ -3,6 +3,8 @@ import { CompanyCard } from "./CompanyCard";
 import { LocationCard } from "./LocationCard";
 import { ContactCard } from "./ContactCard";
 import { LeadCard } from "./LeadCard";
+import { ExportMenu } from "@/components/ExportMenu";
+import { mapToExportRow } from "@/utils/exportRow";
 
 interface CompanyResultProps {
   data: LeadEnrichedResponse;
@@ -13,6 +15,9 @@ export function CompanyResult({ data }: CompanyResultProps) {
 
   return (
     <div className="w-full max-w-2xl grid gap-4">
+      <div className="flex justify-end">
+        <ExportMenu rows={[mapToExportRow(data)]} />
+      </div>
       <CompanyCard empresa={empresa} />
       <LocationCard endereco={empresa.endereco} />
       <ContactCard telefone={empresa.telefone} email={empresa.email} />
