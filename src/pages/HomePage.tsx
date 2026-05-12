@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { LeadForm } from "@/components/LeadForm";
 import { CompanyResult } from "@/components/CompanyResult";
 import { useEnrichLead } from "@/hooks/useEnrichLead";
@@ -6,10 +7,13 @@ import type { LeadFormData } from "@/schemas/leadSchema";
 
 export function HomePage() {
   const [formData, setFormData] = useState<LeadFormData | null>(null);
+  const queryClient = useQueryClient();
 
-  // isFetching (não isPending) para mostrar loading apenas durante requisições ativas,
-  // já que isPending seria true mesmo antes do primeiro submit com enabled: false.
   const { data: result, error, isFetching } = useEnrichLead(formData);
+
+  useEffect(() => {
+    if (result) queryClient.invalidateQueries({ queryKey: ['history'] });
+  }, [result, queryClient]);
 
   const apiError = error ? (error as { message: string }).message : null;
 
