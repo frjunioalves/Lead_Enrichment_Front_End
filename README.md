@@ -53,10 +53,16 @@ O pipeline de CI/CD está configurado e funcionando via GitHub Actions — qualq
 
 ### Opção A — Docker (recomendado)
 
-O `VITE_API_URL` é embutido no bundle durante o build, então deve ser passado como variável na hora de subir:
+O `VITE_API_URL` já tem `http://localhost:3000` como valor padrão no `dockercompose.yml`, então basta subir:
 
 ```bash
-VITE_API_URL=http://localhost:3000 docker compose up --build
+docker compose up --build
+```
+
+Para apontar para outra URL (ex: API em produção), passe a variável explicitamente:
+
+```bash
+VITE_API_URL=https://sua-api.exemplo.com docker compose up --build
 ```
 
 | Serviço | Porta no host |
